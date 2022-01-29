@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/varied-length-wordle-game/static/css/main.073c9b0a.css",
+    "main.js": "/varied-length-wordle-game/static/js/main.91a6c22e.js",
+    "static/js/787.affe4fed.chunk.js": "/varied-length-wordle-game/static/js/787.affe4fed.chunk.js",
+    "static/media/logo.svg": "/varied-length-wordle-game/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/varied-length-wordle-game/index.html",
+    "main.073c9b0a.css.map": "/varied-length-wordle-game/static/css/main.073c9b0a.css.map",
+    "main.91a6c22e.js.map": "/varied-length-wordle-game/static/js/main.91a6c22e.js.map",
+    "787.affe4fed.chunk.js.map": "/varied-length-wordle-game/static/js/787.affe4fed.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.91a6c22e.js"
+  ]
+}
