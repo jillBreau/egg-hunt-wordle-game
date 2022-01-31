@@ -3,18 +3,23 @@ import GameBoard from './GameBoard';
 import KeyBoard from './KeyBoard';
 import '../App.css';
 
-const threeLetterCVCWords = require('../wordLists/threeLetterCvcWordsArrayReduced.json');
+const threeLetterCVCWords = require('../wordLists/threeLetterCvcWordsArray.json');
 const threeLetterWords = require('../wordLists/threeLetterWordsArray.json');
 const fourLetterWords = require('../wordLists/fourLetterWordsArray.json');
 const fiveLetterWords = require('../wordLists/fiveLetterWordsArray.json');
 const sixLetterWords = require('../wordLists/sixLetterWordsArray.json');
+const threeLetterCVCWordsCommon = require('../wordLists/threeLetterCvcWordsArrayCommonPlus.json');
+const threeLetterWordsCommon = require('../wordLists/threeLetterWordsArrayCommonPlus.json');
+const fourLetterWordsCommon = require('../wordLists/fourLetterWordsArrayCommon.json');
+const fiveLetterWordsCommon = require('../wordLists/fiveLetterWordsArrayCommon.json');
+const sixLetterWordsCommon = require('../wordLists/sixLetterWordsArrayCommon.json');
 
 const wordListsObj = {
-  '3cvc': threeLetterCVCWords,
-  '3': threeLetterWords,
-  '4': fourLetterWords,
-  '5': fiveLetterWords,
-  '6': sixLetterWords
+  '3cvc': [threeLetterCVCWordsCommon, threeLetterCVCWords],
+  '3': [threeLetterWordsCommon, threeLetterWords],
+  '4': [fourLetterWordsCommon, fourLetterWords],
+  '5': [fiveLetterWordsCommon, fiveLetterWords],
+  '6': [sixLetterWordsCommon, sixLetterWords],
 }
 
 const keyStatusObj = {
@@ -57,7 +62,7 @@ function useForceUpdate(){
 }
 
 function AppBody() {
-  const [word, setWord] = useState(wordListsObj["3cvc"][Math.floor(Math.random() * wordListsObj["3cvc"].length)].toUpperCase());
+  const [word, setWord] = useState(wordListsObj["3cvc"][0][Math.floor(Math.random() * wordListsObj["3cvc"][0].length)].toUpperCase());
   const [numLettersStr, setNumLettersStr] = useState("3cvc");
   const [message, setMessage] = useState("Play a word");
   const [wordGuessed, setWordGuessed] = useState(false);
@@ -168,7 +173,7 @@ function AppBody() {
               setMessage(`You guessed the word! The word was "${word}"!`)
               currentGuess = "";
             } else {
-              if (wordListsObj[numLettersStr].includes(currentGuess)) {
+              if (wordListsObj[numLettersStr][1].includes(currentGuess)) {
                 if (guesses.length < 5) {
                   setKeyStatus();
                   addToGuesses();
@@ -196,7 +201,7 @@ function AppBody() {
           currentGuess = "";
           setWordGuessed(false);
           setMessage("Play a word");
-          setWord(wordListsObj[numLettersStr][Math.floor(Math.random() * wordListsObj[numLettersStr].length)].toUpperCase())
+          setWord(wordListsObj[numLettersStr][0][Math.floor(Math.random() * wordListsObj[numLettersStr][0].length)].toUpperCase())
           for (const key in keyStatusObj) {
             keyStatusObj[key] = 'default';
           }
@@ -207,7 +212,6 @@ function AppBody() {
         }
       }
     }
-    console.log(wordListsObj["3cvc"].length)
   };
 
   return (
@@ -219,7 +223,7 @@ function AppBody() {
           name="numberOfLetters"
           id="numberOfLetters"
           onChange={e => {
-            setWord(wordListsObj[e.target.value][Math.floor(Math.random() * wordListsObj[e.target.value].length)].toUpperCase());
+            setWord(wordListsObj[e.target.value][0][Math.floor(Math.random() * wordListsObj[e.target.value][0].length)].toUpperCase());
             setNumLettersStr(e.target.value);
             setMessage("Play a word");
           }}
