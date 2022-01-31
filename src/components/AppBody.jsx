@@ -177,7 +177,7 @@ function AppBody() {
                   setKeyStatus();
                   addToGuesses();
                   setWordGuessed(true);
-                  setMessage(`Nice try! The word was "${word}"!`);
+                  setMessage(`Nice try! The word was "${word}".`);
                   currentGuess = "";
                 }
               } else {
@@ -212,7 +212,7 @@ function AppBody() {
 
   return (
     <div>
-      {(!currentGuess.length && !guesses.length) && (<div className="select-group">
+      <div className={`select-group${(currentGuess.length || guesses.length) ? ' invisible' : ''}`}>
         <label className="small-text" for="numberOfLetters">Choose a type of word:</label>
         <select
           value={numLettersStr}
@@ -230,7 +230,7 @@ function AppBody() {
           <option value="5">5 letters</option>
           <option value="6">6 letters</option>
         </select>
-      </div>)}
+      </div>
       <GameBoard guesses={guesses} currentGuess={currentGuess} numLetters={parseInt(numLettersStr)}/>
       <p className={`small-text${(message === "Play a word") ? ' grey-text' : ''}`}>{message}</p>
       <KeyBoard onKeyPress={performKeyPress} statusObj={keyStatusObj}/>
