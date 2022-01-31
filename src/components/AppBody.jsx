@@ -215,6 +215,7 @@ function AppBody() {
       {(!currentGuess.length && !guesses.length) && (<div className="select-group">
         <label className="small-text" for="numberOfLetters">Choose a type of word:</label>
         <select
+          value={numLettersStr}
           name="numberOfLetters"
           id="numberOfLetters"
           onChange={e => {
