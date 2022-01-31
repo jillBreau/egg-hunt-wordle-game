@@ -3,11 +3,11 @@ import GameBoard from './GameBoard';
 import KeyBoard from './KeyBoard';
 import '../App.css';
 
-const threeLetterCVCWords = ["cat", "bar", "cab", "bat", "peg", "tab"];
-const threeLetterWords = ["she", "our", "the", "oar", "bar", "cat"];
-const fourLetterWords = ["game", "word", "fart", "wins", "bars", "face"];
-const fiveLetterWords = ["rents", "clamp", "dough", "state", "stare", "milky"];
-const sixLetterWords = ["letter", "letter", "bottle", "phones", "finger", "wordle"];
+const threeLetterCVCWords = require('../wordLists/threeLetterCvcWordsArray.json');
+const threeLetterWords = require('../wordLists/threeLetterWordsArray.json');
+const fourLetterWords = require('../wordLists/fourLetterWordsArray.json');
+const fiveLetterWords = require('../wordLists/fiveLetterWordsArray.json');
+const sixLetterWords = require('../wordLists/sixLetterWordsArray.json');
 
 const wordListsObj = {
   '3cvc': threeLetterCVCWords,
@@ -168,7 +168,7 @@ function AppBody() {
               setMessage(`You guessed the word! The word was "${word}"!`)
               currentGuess = "";
             } else {
-              if (wordListsObj[numLettersStr].includes(currentGuess.toLowerCase())) {
+              if (wordListsObj[numLettersStr].includes(currentGuess)) {
                 if (guesses.length < 5) {
                   setKeyStatus();
                   addToGuesses();
@@ -207,10 +207,6 @@ function AppBody() {
         }
       }
     }
-    console.log("\n");
-    console.log(currentGuess);
-    console.log(guesses);
-    console.log("\n");
   };
 
   return (

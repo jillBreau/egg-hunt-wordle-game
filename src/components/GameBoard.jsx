@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import LetterSquare from './LetterSquare';
 import '../App.css';
 
@@ -27,7 +26,7 @@ function GameBoard(props) {
     <div className="grid">
       {(Array.apply(null, Array(6)).map((x, rowIndex) => {
         return (
-          <div className="grid-row" id={`row${rowIndex}`}>
+          <div className="grid-row" key={`row${rowIndex}`}>
             {
               !!ongoingGuesses[rowIndex] && ongoingGuesses[rowIndex].map((letter, index) => {
                 return <LetterSquare key={`${rowIndex}-${index}-letter`} value={letter[0]} status={letter[1]} />
