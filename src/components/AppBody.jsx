@@ -3,7 +3,7 @@ import GameBoard from './GameBoard';
 import KeyBoard from './KeyBoard';
 import '../App.css';
 
-const threeLetterCVCWords = require('../wordLists/threeLetterCvcWordsArray.json');
+const threeLetterCVCWords = require('../wordLists/threeLetterCvcWordsArrayReduced.json');
 const threeLetterWords = require('../wordLists/threeLetterWordsArray.json');
 const fourLetterWords = require('../wordLists/fourLetterWordsArray.json');
 const fiveLetterWords = require('../wordLists/fiveLetterWordsArray.json');
@@ -207,6 +207,7 @@ function AppBody() {
         }
       }
     }
+    console.log(wordListsObj["3cvc"].length)
   };
 
   return (
