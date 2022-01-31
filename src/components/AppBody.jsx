@@ -50,7 +50,7 @@ const keyStatusObj = {
   'Y': 'default',
   'Z': 'default',
   'ENTER' : 'default',
-  'BACK' : 'default',
+  'BACKSPACE' : 'default',
 }
 
 let guesses = [];
@@ -61,7 +61,8 @@ function useForceUpdate(){
   return () => setVal(val => val + 1);
 }
 
-function AppBody() {
+function AppBody(props) {
+  const { keyPressed } = props;
   const [word, setWord] = useState(wordListsObj["3cvc"][0][Math.floor(Math.random() * wordListsObj["3cvc"][0].length)].toUpperCase());
   const [numLettersStr, setNumLettersStr] = useState("3cvc");
   const [message, setMessage] = useState("Play a word");
@@ -206,7 +207,7 @@ function AppBody() {
             keyStatusObj[key] = 'default';
           }
         }
-      } else if (key === 'BACK') {
+      } else if (key === 'BACKSPACE') {
         if (currentGuess.length) {
           currentGuess = currentGuess.slice(0, -1)
         }
@@ -237,7 +238,7 @@ function AppBody() {
       </div>
       <GameBoard guesses={guesses} currentGuess={currentGuess} numLetters={parseInt(numLettersStr)}/>
       <p className={`small-text${(message === "Play a word") ? ' grey-text' : ''}`}>{message}</p>
-      <KeyBoard onKeyPress={performKeyPress} statusObj={keyStatusObj}/>
+      <KeyBoard onKeyPress={performKeyPress} statusObj={keyStatusObj} keyPressed={keyPressed}/>
     </div>
   );
 }

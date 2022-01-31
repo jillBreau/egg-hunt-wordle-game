@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function useForceUpdate(){
   const [val, setVal] = useState(0);
@@ -6,15 +6,26 @@ function useForceUpdate(){
 }
 
 function KeyRect(props) {
-  const { onPress, value, statusObj } = props
+  const { onPress, value, statusObj, keyPressed } = props
   const forceUpdate = useForceUpdate();
+
+  const onClickOrPress = () => {
+    onPress(value);
+    forceUpdate();
+  }
+
+  useEffect(() => {
+    if (keyPressed.toUpperCase() === value) {
+      onClickOrPress();
+    }
+  }, [keyPressed]);
 
   return (
     <div
       className={value.length === 1 ? `key-rect ${statusObj[value]}` : `key-rect-special ${statusObj[value]}`}
-      onClick={() => {onPress(value); forceUpdate();}}
+      onClick={onClickOrPress}
     >
-      {value}
+      {value === 'BACKSPACE' ? 'BACK' : value}
     </div>
   );
 }
