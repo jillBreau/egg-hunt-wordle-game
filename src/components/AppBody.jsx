@@ -222,14 +222,13 @@ function AppBody() {
             setMessage("Play a word");
           }}
         >
-          <option value="3cvc">3 letters (always consonant-vowel-consonant)</option>
+          <option value="3cvc">3 letters (consonant-vowel-consonant)</option>
           <option value="3">3 letters </option>
           <option value="4">4 letters</option>
           <option value="5">5 letters</option>
           <option value="6">6 letters</option>
         </select>
       </div>)}
-      <p>{word}</p>
       <GameBoard guesses={guesses} currentGuess={currentGuess} numLetters={parseInt(numLettersStr)}/>
       <p className={`small-text${(message === "Play a word") ? ' grey-text' : ''}`}>{message}</p>
       <KeyBoard onKeyPress={performKeyPress} statusObj={keyStatusObj}/>
