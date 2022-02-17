@@ -2,7 +2,7 @@ import LetterSquare from './LetterSquare';
 import '../App.css';
 
 function GameBoard(props) {
-  const { guesses, currentGuess, numLetters } = props;
+  const { guesses, currentGuess, numLetters, numGuesses } = props;
   const transformCurrentGuess = () => {
     const transformedArray = []
     for (var i = 0; i < currentGuess.length; i++) {
@@ -24,7 +24,7 @@ function GameBoard(props) {
 
   return (
     <div className="grid">
-      {(Array.apply(null, Array(6)).map((x, rowIndex) => {
+      {(Array.apply(null, Array(numGuesses)).map((x, rowIndex) => {
         return (
           <div className="grid-row" key={`row${rowIndex}`}>
             {

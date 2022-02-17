@@ -57,7 +57,7 @@ let guesses = [];
 let currentGuess = "";
 
 function useForceUpdate(){
-  const [val, setVal] = useState(0);
+  const [, setVal] = useState(0);
   return () => setVal(val => val + 1);
 }
 
@@ -65,6 +65,7 @@ function AppBody(props) {
   const { keyPressed } = props;
   const [word, setWord] = useState(wordListsObj["3cvc"][0][Math.floor(Math.random() * wordListsObj["3cvc"][0].length)].toUpperCase());
   const [numLettersStr, setNumLettersStr] = useState("3cvc");
+  const [numGuessesStr, setNumGuessesStr] = useState("6");
   const [message, setMessage] = useState("Play a word");
   const [wordGuessed, setWordGuessed] = useState(false);
 
@@ -109,42 +110,42 @@ function AppBody(props) {
     }
 
     // populate letters into guess array
-    for (var i = 0; i < currentGuess.length; i++) {
-      const currentLetter = currentGuess[i];
+    for (var j = 0; j < currentGuess.length; j++) {
+      const currentLetter = currentGuess[j];
       const guessLetter = [currentLetter];
       guess.push(guessLetter);
     }
 
     // populate incorrect statuses into guess array for letters that do not appear
-    for (var i = 0; i < guess.length; i++) {
-      if (!occurencesInWord[guess[i][0]]) {
-        guess[i].push('incorrect');
+    for (var k = 0; k < guess.length; k++) {
+      if (!occurencesInWord[guess[k][0]]) {
+        guess[k].push('incorrect');
       }
     }
 
     // populate correct statuses into guess array for letters are in the right place
-    for (var i = 0; i < guess.length; i++) {
-      if (occurencesInWord[guess[i][0]] && occurencesInWord[guess[i][0]].includes(i)) {
-        guess[i].push('correct');
-        const index = occurencesInWord[guess[i][0]].indexOf(i);
-        occurencesInWord[guess[i][0]].splice(index, 1);
-        if (!occurencesInWord[guess[i][0]].length) {
-          delete occurencesInWord[guess[i][0]];
+    for (var l = 0; l < guess.length; l++) {
+      if (occurencesInWord[guess[l][0]] && occurencesInWord[guess[l][0]].includes(l)) {
+        guess[l].push('correct');
+        const index = occurencesInWord[guess[l][0]].indexOf(l);
+        occurencesInWord[guess[l][0]].splice(index, 1);
+        if (!occurencesInWord[guess[l][0]].length) {
+          delete occurencesInWord[guess[l][0]];
         }
       }
     }
 
     // populate statuses into guess array for letters that are in a different place or have no instances remaining
-    for (var i = 0; i < guess.length; i++) {
-      if (guess[i].length === 1) {
-        if (occurencesInWord[guess[i][0]]) {
-          guess[i].push('different-location');
-          occurencesInWord[guess[i][0]] = occurencesInWord[guess[i][0]].slice(0, -1);
-          if (!occurencesInWord[guess[i][0]].length) {
-            delete occurencesInWord[guess[i][0]];
+    for (var m = 0; m < guess.length; m++) {
+      if (guess[m].length === 1) {
+        if (occurencesInWord[guess[m][0]]) {
+          guess[m].push('different-location');
+          occurencesInWord[guess[m][0]] = occurencesInWord[guess[m][0]].slice(0, -1);
+          if (!occurencesInWord[guess[m][0]].length) {
+            delete occurencesInWord[guess[m][0]];
           }
         } else {
-          guess[i].push('incorrect');
+          guess[m].push('incorrect');
         }
       }
     }
@@ -165,7 +166,7 @@ function AppBody(props) {
       }
     } else {
       if (key === 'ENTER') {
-        if (!wordGuessed && guesses.length < 6) {
+        if (!wordGuessed && guesses.length < parseInt(numGuessesStr)) {
           if (currentGuess.length === parseInt(numLettersStr)) {
             if (currentGuess === word) {
               setKeyStatus();
@@ -175,7 +176,7 @@ function AppBody(props) {
               currentGuess = "";
             } else {
               if (wordListsObj[numLettersStr][1].includes(currentGuess)) {
-                if (guesses.length < 5) {
+                if (guesses.length < parseInt(numGuessesStr) - 1) {
                   setKeyStatus();
                   addToGuesses();
                   currentGuess = "";
@@ -217,26 +218,46 @@ function AppBody(props) {
 
   return (
     <div>
-      <div className={`select-group${(currentGuess.length || guesses.length) ? ' invisible' : ''}`}>
-        <label className="small-text" for="numberOfLetters">Choose a type of word:</label>
-        <select
-          value={numLettersStr}
-          name="numberOfLetters"
-          id="numberOfLetters"
-          onChange={e => {
-            setWord(wordListsObj[e.target.value][0][Math.floor(Math.random() * wordListsObj[e.target.value][0].length)].toUpperCase());
-            setNumLettersStr(e.target.value);
-            setMessage("Play a word");
-          }}
-        >
-          <option value="3cvc">3 letters (consonant-vowel-consonant)</option>
-          <option value="3">3 letters </option>
-          <option value="4">4 letters</option>
-          <option value="5">5 letters</option>
-          <option value="6">6 letters</option>
-        </select>
+        <div className={`selects-group${(currentGuess.length || guesses.length) ? ' invisible' : ''}`}>
+        <div className="select-group">
+          <label className="small-text" for="numberOfLetters">Type of word:</label>
+          <select
+            value={numLettersStr}
+            name="numberOfLetters"
+            id="numberOfLetters"
+            onChange={e => {
+              setWord(wordListsObj[e.target.value][0][Math.floor(Math.random() * wordListsObj[e.target.value][0].length)].toUpperCase());
+              setNumLettersStr(e.target.value);
+              setMessage("Play a word");
+            }}
+          >
+            <option value="3cvc">3 letters (c-v-c)</option>
+            <option value="3">3 letters </option>
+            <option value="4">4 letters</option>
+            <option value="5">5 letters</option>
+            <option value="6">6 letters</option>
+          </select>
+        </div>
+        <div className="select-group">
+          <label className="small-text" for="numberOfLetters">Number of guesses:</label>
+          <select
+            value={numGuessesStr}
+            name="numberOfGuesses"
+            id="numberOfGuesses"
+            onChange={e => {
+              setNumGuessesStr(e.target.value);
+              setMessage("Play a word");
+            }}
+          >
+            <option value="6">6 guesses</option>
+            <option value="7">7 guesses </option>
+            <option value="8">8 guesses</option>
+            <option value="9">9 guesses</option>
+            <option value="10">10 guesses</option>
+          </select>
+        </div>
       </div>
-      <GameBoard guesses={guesses} currentGuess={currentGuess} numLetters={parseInt(numLettersStr)}/>
+      <GameBoard guesses={guesses} currentGuess={currentGuess} numLetters={parseInt(numLettersStr)} numGuesses={parseInt(numGuessesStr)}/>
       <p className={`small-text${(message === "Play a word") ? ' grey-text' : ''}`}>{message}</p>
       <KeyBoard onKeyPress={performKeyPress} statusObj={keyStatusObj} keyPressed={keyPressed}/>
     </div>
