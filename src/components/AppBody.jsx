@@ -3,23 +3,15 @@ import GameBoard from './GameBoard';
 import KeyBoard from './KeyBoard';
 import '../App.css';
 
-const threeLetterCVCWords = require('../wordLists/threeLetterCvcWordsArray.json');
-const threeLetterWords = require('../wordLists/threeLetterWordsArray.json');
-const fourLetterWords = require('../wordLists/fourLetterWordsArray.json');
 const fiveLetterWords = require('../wordLists/fiveLetterWordsArray.json');
-const sixLetterWords = require('../wordLists/sixLetterWordsArray.json');
-const threeLetterCVCWordsCommon = require('../wordLists/threeLetterCvcWordsArrayCommonPlus.json');
-const threeLetterWordsCommon = require('../wordLists/threeLetterWordsArrayCommonPlus.json');
-const fourLetterWordsCommon = require('../wordLists/fourLetterWordsArrayCommon.json');
-const fiveLetterWordsCommon = require('../wordLists/fiveLetterWordsArrayCommon.json');
-const sixLetterWordsCommon = require('../wordLists/sixLetterWordsArrayCommon.json');
+const fiveLetterWordsMatthew = require('../wordLists/fiveLetterWordsArrayMatthew.json');
+const fiveLetterWordsNatalie = require('../wordLists/fiveLetterWordsArrayNatalie.json');
+const fiveLetterWordsKathryn = require('../wordLists/fiveLetterWordsArrayKathryn.json');
 
 const wordListsObj = {
-  '3cvc': [threeLetterCVCWordsCommon, threeLetterCVCWords],
-  '3': [threeLetterWordsCommon, threeLetterWords],
-  '4': [fourLetterWordsCommon, fourLetterWords],
-  '5': [fiveLetterWordsCommon, fiveLetterWords],
-  '6': [sixLetterWordsCommon, sixLetterWords],
+  '5M': [fiveLetterWordsMatthew, fiveLetterWords],
+  '5N': [fiveLetterWordsNatalie, fiveLetterWords],
+  '5K': [fiveLetterWordsKathryn, fiveLetterWords],
 }
 
 const keyStatusObj = {
@@ -63,9 +55,10 @@ function useForceUpdate(){
 
 function AppBody(props) {
   const { keyPressed } = props;
-  const [word, setWord] = useState(wordListsObj["3cvc"][0][Math.floor(Math.random() * wordListsObj["3cvc"][0].length)].toUpperCase());
-  const [numLettersStr, setNumLettersStr] = useState("3cvc");
-  const [numGuessesStr, setNumGuessesStr] = useState("6");
+  const [playable, setPlayable] = useState(true);
+  const [wordIndex, setWordIndex] = useState(0);
+  const [word, setWord] = useState(wordListsObj["5M"][0][wordIndex].toUpperCase());
+  const [whoseClues, setWhoseClues] = useState("5M");
   const [message, setMessage] = useState("Play a word");
   const [wordGuessed, setWordGuessed] = useState(false);
 
@@ -155,28 +148,28 @@ function AppBody(props) {
 
   const performKeyPress = (key) => {
     if (wordGuessed) {
-      setMessage("Press ENTER to start a new game");
+      setMessage(wordIndex === wordListsObj[whoseClues][0].length - 1 ? "Press ENTER to finish" : "Press ENTER to continue to the next clue");
     } else {
       setMessage("Play a word");
     }
     forceUpdate();
     if (key.length === 1 && !wordGuessed) {
-      if (currentGuess.length < parseInt(numLettersStr)) {
+      if (currentGuess.length < 5) {
         currentGuess += key;
       }
     } else {
       if (key === 'ENTER') {
-        if (!wordGuessed && guesses.length < parseInt(numGuessesStr)) {
-          if (currentGuess.length === parseInt(numLettersStr)) {
+        if (!wordGuessed && guesses.length < 6) {
+          if (currentGuess.length === 5) {
             if (currentGuess === word) {
               setKeyStatus();
               addToGuesses();
               setWordGuessed(true);
-              setMessage(`You guessed the word! The word was "${word}"!`)
+              setMessage(`You got your clue! Your clue is "${word}"!`)
               currentGuess = "";
             } else {
-              if (wordListsObj[numLettersStr][1].includes(currentGuess)) {
-                if (guesses.length < parseInt(numGuessesStr) - 1) {
+              if (wordListsObj[whoseClues][1].includes(currentGuess)) {
+                if (guesses.length < 5) {
                   setKeyStatus();
                   addToGuesses();
                   currentGuess = "";
@@ -184,15 +177,11 @@ function AppBody(props) {
                   setKeyStatus();
                   addToGuesses();
                   setWordGuessed(true);
-                  setMessage(`Nice try! The word was "${word}".`);
+                  setMessage(`Nice try! Your clue is "${word}".`);
                   currentGuess = "";
                 }
               } else {
-                if (numLettersStr === "3cvc") {
-                  setMessage("This is not an accepted consonant-vowel-consonant word");
-                } else {
-                  setMessage("This is not an accepted word");
-                }
+                setMessage("This is not an accepted word");
               }
             }
           } else {
@@ -202,10 +191,16 @@ function AppBody(props) {
           guesses = [];
           currentGuess = "";
           setWordGuessed(false);
-          setMessage("Play a word");
-          setWord(wordListsObj[numLettersStr][0][Math.floor(Math.random() * wordListsObj[numLettersStr][0].length)].toUpperCase())
           for (const key in keyStatusObj) {
             keyStatusObj[key] = 'default';
+          }
+          if (wordIndex < wordListsObj[whoseClues][0].length - 1) {
+            setMessage("Play a word");
+            setWord(wordListsObj[whoseClues][0][wordIndex + 1].toUpperCase());
+            setWordIndex(wordIndex + 1);
+          } else {
+            setMessage("Congratulations! Happy Easter <3");
+            setPlayable(false);
           }
         }
       } else if (key === 'BACKSPACE') {
@@ -218,48 +213,26 @@ function AppBody(props) {
 
   return (
     <div>
-        <div className={`selects-group${(currentGuess.length || guesses.length) ? ' invisible' : ''}`}>
-        <div className="select-group">
-          <label className="small-text" for="numberOfLetters">Type of word:</label>
-          <select
-            value={numLettersStr}
-            name="numberOfLetters"
-            id="numberOfLetters"
-            onChange={e => {
-              setWord(wordListsObj[e.target.value][0][Math.floor(Math.random() * wordListsObj[e.target.value][0].length)].toUpperCase());
-              setNumLettersStr(e.target.value);
-              setMessage("Play a word");
-            }}
-          >
-            <option value="3cvc">3 letters (c-v-c)</option>
-            <option value="3">3 letters </option>
-            <option value="4">4 letters</option>
-            <option value="5">5 letters</option>
-            <option value="6">6 letters</option>
-          </select>
-        </div>
-        <div className="select-group">
-          <label className="small-text" for="numberOfLetters">Number of guesses:</label>
-          <select
-            value={numGuessesStr}
-            name="numberOfGuesses"
-            id="numberOfGuesses"
-            onChange={e => {
-              setNumGuessesStr(e.target.value);
-              setMessage("Play a word");
-            }}
-          >
-            <option value="6">6 guesses</option>
-            <option value="7">7 guesses </option>
-            <option value="8">8 guesses</option>
-            <option value="9">9 guesses</option>
-            <option value="10">10 guesses</option>
-          </select>
-        </div>
+      <div className={`select-group${(currentGuess.length || guesses.length || wordIndex > 0) ? ' invisible' : ''}`}>
+        <label className="small-text" htmlFor="whoseClues">Select your name:</label>
+        <select
+          value={whoseClues}
+          name="whoseClues"
+          id="whoseClues"
+          onChange={e => {
+            setWhoseClues(e.target.value);
+            setWord(wordListsObj[e.target.value][0][0].toUpperCase());
+            setMessage("Play a word");
+          }}
+        >
+          <option value="5M">Matthew</option>
+          <option value="5N">Natalie</option>
+          <option value="5K">Kathryn</option>
+        </select>
       </div>
-      <GameBoard guesses={guesses} currentGuess={currentGuess} numLetters={parseInt(numLettersStr)} numGuesses={parseInt(numGuessesStr)}/>
+      {playable && <GameBoard guesses={guesses} currentGuess={currentGuess}/>}
       <p className={`small-text${(message === "Play a word") ? ' grey-text' : ''}`}>{message}</p>
-      <KeyBoard onKeyPress={performKeyPress} statusObj={keyStatusObj} keyPressed={keyPressed}/>
+      {playable && <KeyBoard onKeyPress={performKeyPress} statusObj={keyStatusObj} keyPressed={keyPressed}/>}
     </div>
   );
 }

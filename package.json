@@ -1,7 +1,7 @@
 {
-  "name": "varied-length-wordle",
+  "name": "egg-hunt-wordle",
   "version": "0.1.0",
-  "homepage": "https://jillBreau.github.io/varied-length-wordle-game",
+  "homepage": "https://jillBreau.github.io/egg-hunt-wordle-game",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.1",

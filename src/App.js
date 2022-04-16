@@ -16,7 +16,7 @@ function App() {
   return (
     <div className="App" tabIndex="0" onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
       <header className="App-header">
-        <p>{'A game based on Wordle with the option to vary the lengths of words.'}</p>
+        <p>{'An easter egg hunt based on Wordle.'}</p>
       </header>
       <body className="App-body">
         <div className="App-body-contents">

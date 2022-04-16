@@ -1,6 +1,6 @@
 {
-  "short_name": "Game based on Wordle",
-  "name": "A game based on Wordle with the option to vary the lengths of words",
+  "short_name": "Egg hunt based on Wordle",
+  "name": "An easter egg hunt based on Wordle",
   "icons": [
     {
       "src": "favicon.ico",

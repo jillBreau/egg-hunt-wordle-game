@@ -57,22 +57,11 @@
   color: #222222;
 }
 
-.selects-group {
+.select-group {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 4px;
-}
-
-.select-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   margin: 0 5px;
-}
-
-.select-group * {
-  margin: 2px;
 }
 
 .link {
